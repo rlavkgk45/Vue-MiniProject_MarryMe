@@ -15,6 +15,7 @@ GitHub Hyperlink : [URL](https://github.com/rlavkgk45/Servlet-JspProject_YourCho
 
 ### USED
 * Vue
+* JavaScript
 * FrameWork & Library
   * Json
 * Web Site
