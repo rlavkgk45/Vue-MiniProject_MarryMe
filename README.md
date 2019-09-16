@@ -25,7 +25,8 @@ GitHub Hyperlink : [URL](https://github.com/rlavkgk45/Servlet-JspProject_YourCho
   * Apache Tomcat
 * API
   * Google Chart
-
+* Data
+  * 서울시열린데이터광장 : [URL](https://data.seoul.go.kr/)
 ### Author
 👤 Dongbeom Kim
 
