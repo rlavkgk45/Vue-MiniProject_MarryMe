@@ -7,11 +7,11 @@
 
 ````JAVA
 public static void main(String [] args){
-  System.out.println("Hellow My Servlet-JspProject");
+  System.out.println("Hellow My Vue MiniProject MarryMe");
 }
 ``````
 
-GitHub Hyperlink : [URL](https://github.com/rlavkgk45/Servlet-JspProject_YourChoice)
+GitHub Hyperlink : [URL](https://github.com/rlavkgk45/Vue-MiniProject_MarryMe)
 
 ### USED
 * Vue
