@@ -12,13 +12,10 @@
 </head>
 
 <body>
-
     <div id="app">
         <button v-on:click="drawVisualization()">클릭</button>
     </div>
-
     <div id="chart_div" style="width: 1500px; height: 500px"></div>
-
     <script>
         google.charts.load("current", { "packages": ["corechart"] });
 
@@ -26,51 +23,52 @@
             el: "#app",
             data: {
                 rowData: [
-                    ["Year", "서울시 평균 초혼 연령", "20 ~ 24", "25 ~ 29", "30 ~ 34", "35 ~ 39"]
+                    ["Year", "서울시 평균 초혼 연령", "20 - 24세", "25 - 29세", "30 - 34세", "35 - 39세", "총합"]
                 ]
             },
             mounted() {
                 axios
-                    .get("http://localhost/marryMe/marriage.jsp")
+                    .get("http://localhost/step02_marryMe/marriage.jsp")
                     .then(response => {
                         let data = response.data;
-                        let leng = data.length;
-
                         let year, male, female, avg;
 
-                        for (let i = 1; i < leng; i++) {
-                            let element = Object.values(data[i]);
+                        data.shift();
+                        data.forEach(element => {
+                            element = Object.values(element);
 
                             year = element[0].toString();
-                            male = element[2];
-                            female = element[3];
+                            female = element[2];
+                            male = element[3];
                             avg = (male + female) / 2;
 
                             this.rowData.push([year, avg]);
-                        }
+                        });
                     }).catch(error => {
-                            console.log(error);
+                        console.log('then error : ', error)
                     }),
-                    axios
-                        .get("http://localhost/marryMe/job.jsp")
-                        .then(response => {
-                            let data = response.data
-                            let leng = response.data.length
-                            let total, earTwo, lateTwo, earThree, lateThree;
+                axios
+                    .get("http://localhost/step02_marryMe/job.jsp")
+                    .then(response => {
+                        let data = response.data
+                        let total, earTwo, lateTwo, earThree, lateThree, all;
 
-                            for (let i = 2; i < leng; i++) {
-                                let element = Object.values(data[i]);
-                                total = Number(element[2]);
-                                earTwo = this.numberLeng(element[8] / total);
-                                lateTwo = this.numberLeng(element[11] / total);
-                                earThree = this.numberLeng(element[14] / total);
-                                lateThree = this.numberLeng(element[17] / total);
-                                this.rowData[i - 1].push(earTwo, lateTwo, earThree, lateThree);
-                            }
-                            console.log(this.rowData)
-                        }).catch(error => {
-                                console.log(error);
+                        data.shift();
+                        data.shift();
+
+                        data.forEach((element, index) => {
+                            element = Object.values(element);
+                            total = Number(element[2]);
+                            earTwo = this.numberLeng(element[8] / total);
+                            lateTwo = this.numberLeng(element[11] / total);
+                            earThree = this.numberLeng(element[14] / total);
+                            lateThree = this.numberLeng(element[17] / total);
+                            all = (earTwo + lateTwo + earThree + lateThree);
+                            this.rowData[index + 1].push(earTwo, lateTwo, earThree, lateThree, all);
                         })
+                    }).catch(error => {
+                        console.log('then error : ', error)
+                    })
             },
             methods: {
                 drawVisualization: function () {
@@ -81,22 +79,19 @@
                         vAxes: { 0: { title: "나이", format: "##" }, 1: { title: "서울시 연령대 별 취업 비율", format: "#%" } },
                         hAxis: { title: "연도" },
                         series: {
-                            0: { type: "bars", targetAxisIndex: 0 },
-                            1: { type: "line", targetAxisIndex: 1 },
-                            2: { type: "line", targetAxisIndex: 1 },
-                            3: { type: "line", targetAxisIndex: 1 },
-                            4: { type: "line", targetAxisIndex: 1 }
+                            0: { type: "line", targetAxisIndex: 0 },
+                            1: { type: "bars", targetAxisIndex: 1 },
+                            2: { type: "bars", targetAxisIndex: 1 },
+                            3: { type: "bars", targetAxisIndex: 1 },
+                            4: { type: "bars", targetAxisIndex: 1 },
+                            5: { type: "bars", targetAxisIndex: 1 }
                         }
                     }
 
                     var chart = new google.visualization.ComboChart(document.getElementById("chart_div"));
                     chart.draw(data, options);
                 },
-                numberLeng: function (number) {
-                    number = number.toFixed(2);
-                    number = Number(number, 4);
-                    return number;
-                }
+                numberLeng : number => { return number = Number(number.toFixed(3), 4); }
             }
         })
 
@@ -104,16 +99,3 @@
 </body>
 
 </html>
-
-<!-- 
-결론
-
-우선 초혼 평균 연령은 2000년도부터 현재까지 지속적으로 증가한 것이 확연하고,
-20~24 부터 35~39세 까지의 취업 비율은 모두 대체적으로 감소한 것으로 보인다.
-하지만 처음 예상한 결론이었던 결혼 적령대의 취업 비율이 낮아짐에 따라, 즉 결혼 적령대 사람들이 취업을 못함에 따라 초혼 평균 연령이
-증가한 것으로 보기에는 다소 근거가 부족해 보인다.
-
-만약 추가로 조사를 더 진행해 본다면, 물가 상승률, 수도권 집가 상승률, 평균 임금 상승률을 비교하여,
-임금 상승률이 물가 및 집가 상승률에 미치지 못하여 충분한 결혼 자금을 모으지 못해 초혼 평균 연령이 증가한 것이 아닌지 조사를 진행해보고 싶다.
-
- -->
