@@ -36,5 +36,5 @@ GitHub Hyperlink : [URL](https://github.com/rlavkgk45/Vue-MiniProject_MarryMe)
 
 👤 Jinhwi Kim
 
-## Example
+## PreView
 ![2](https://user-images.githubusercontent.com/52446213/65112298-210cc280-da1a-11e9-8f29-2e8f59a45f3d.PNG)
